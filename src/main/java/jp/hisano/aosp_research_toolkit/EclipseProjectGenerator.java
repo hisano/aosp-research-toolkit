@@ -42,42 +42,55 @@ public final class EclipseProjectGenerator {
 			System.exit(1);
 		}
 
-		createJar(rootDirectory, "out/target/common/obj/JAVA_LIBRARIES", "frameworks.jar", Lists.newArrayList("*support*", "cts*"));
-		createJar(rootDirectory, "out/target/common/obj/APPS", "apps.jar", Lists.newArrayList("*Tests_*", "*tests_*", "Cts*"));
+		createJar(rootDirectory, "out/target/common/obj/JAVA_LIBRARIES", Lists.newArrayList("*support*", "cts*"), RESOURCE_DIRECTORY_NAME + "/frameworks.jar");
+		createJar(rootDirectory, "out/target/common/obj/APPS", Lists.newArrayList("*Tests_*", "*tests_*", "Cts*"), RESOURCE_DIRECTORY_NAME + "/apps.jar");
 
-		createSourcesJar(rootDirectory, ".");
+		createSourcesJar(rootDirectory, ".", RESOURCE_DIRECTORY_NAME + "/sources.jar");
 
 		createZip(rootDirectory);
 	}
 
 	private static void createZip(File rootDirectory) {
-		System.out.println("Generate zip");
+		String targetFileName = rootDirectory.getName() + ".zip";
+		System.out.println("Generating: " + targetFileName);
 		File projectDirectory = getProjectDirectory(rootDirectory);
-		ZipUtil.pack(projectDirectory, new File(projectDirectory.getParentFile(), rootDirectory.getName() + ".zip"));
+		ZipUtil.pack(projectDirectory, new File(projectDirectory.getParentFile(), targetFileName));
+
+		System.out.println("Deleting working directory");
+		FileUtils.deleteQuietly(projectDirectory);
 	}
 
-	private static void createEmptyProject(File rootDirectory) throws IOException {
-		System.out.println("Generate Eclipse project");
-		File projectDirectory = getProjectDirectory(rootDirectory);
+	private static final String RESOURCE_DIRECTORY_NAME = "res";
 
+	private static void createEmptyProject(File rootDirectory) throws IOException {
+		System.out.println("Start generating project: " + rootDirectory.getName());
+		File projectDirectory = getProjectDirectory(rootDirectory);
+		String projectName = rootDirectory.getName();
+
+		System.out.println("Deleting previous project: " + projectName);
 		FileUtils.deleteQuietly(projectDirectory);
 
+		System.out.println("Generating project: " + projectName);
 		FileUtils.copyDirectory(new File("template"), projectDirectory);
 
 		File projectFile = new File(projectDirectory, ".project");
-		FileUtils.write(projectFile, FileUtils.readFileToString(projectFile).replace("$PROJECT_NAME", rootDirectory.getName()));
+		FileUtils.write(projectFile, FileUtils.readFileToString(projectFile).replace("PROJECT_NAME", projectName));
+
+		File launchFile = new File(projectDirectory, RESOURCE_DIRECTORY_NAME + "/launch.xml");
+		FileUtils.write(launchFile, FileUtils.readFileToString(launchFile).replace("PROJECT_NAME", projectName));
+		launchFile.renameTo(new File(projectDirectory, RESOURCE_DIRECTORY_NAME + "/Debug Selected Process in 'Devices' View with '" + projectName + "' Project.launch"));
 	}
 
 	private static File getProjectDirectory(File rootDirectory) {
 		return new File("target/" + rootDirectory.getName());
 	}
 
-	private static void createSourcesJar(File rootDirectory, String sourcePath) {
+	private static void createSourcesJar(File sourceRootDirectory, String sourceDirectoryPath, String targetFilePath) {
 		File workingDirectory = prepareWorkingDirectory();
 
 		Pattern PACKAGE_PATTERN = Pattern.compile(".*package +([\\w\\.]+);.*");
 		System.out.println("Searching java files");
-		FileUtils.listFiles(new File(rootDirectory, sourcePath), new String[] {"java"}, true).stream().forEach(file -> {
+		FileUtils.listFiles(new File(sourceRootDirectory, sourceDirectoryPath), new String[] {"java"}, true).stream().forEach(file -> {
 			try {
 				String content = Joiner.on("  ").join(FileUtils.readLines(file));
 
@@ -104,28 +117,28 @@ public final class EclipseProjectGenerator {
 		});
 		deleteNotUsedFiles(workingDirectory);
 
-		generateJarFile(workingDirectory, new File(getProjectDirectory(rootDirectory), "sources.jar"));
+		createJar(workingDirectory, new File(getProjectDirectory(sourceRootDirectory), targetFilePath));
 	}
 
-	private static void generateJarFile(File workingDirectory, File targetFile) {
-		System.out.println("Deleting " + targetFile.getName());
-		FileUtils.deleteQuietly(targetFile);
-
-		System.out.println("Generating: " + targetFile.getName());
-		ZipUtil.pack(workingDirectory, targetFile);
-	}
-
-	private static void createJar(File rootDirectory, String sourcePath, String targetFileName, List<String> excludedDirectoryPatterns) {
+	private static void createJar(File sourceRootDirectory, String sourceDirectoryPath, List<String> excludedDirectoryPatterns, String targetFilePath) {
 		File workingDirectory = prepareWorkingDirectory();
 
 		System.out.println("Searching jar files");
-		FileUtils.listFiles(new File(rootDirectory, sourcePath), new NameFileFilter("classes-full-debug.jar"), new NotFileFilter(new WildcardFileFilter(excludedDirectoryPatterns))).stream().forEach(file -> {
+		FileUtils.listFiles(new File(sourceRootDirectory, sourceDirectoryPath), new NameFileFilter("classes-full-debug.jar"), new NotFileFilter(new WildcardFileFilter(excludedDirectoryPatterns))).stream().forEach(file -> {
 			System.out.println("Unpacking: " + file.getAbsolutePath());
 			ZipUtil.unpack(file, workingDirectory);
 		});
 		deleteNotUsedFiles(workingDirectory);
 
-		generateJarFile(workingDirectory, new File(getProjectDirectory(rootDirectory), targetFileName));
+		createJar(workingDirectory, new File(getProjectDirectory(sourceRootDirectory), targetFilePath));
+	}
+
+	private static void createJar(File workingDirectory, File targetFile) {
+		System.out.println("Deleting previous file: " + targetFile.getName());
+		FileUtils.deleteQuietly(targetFile);
+
+		System.out.println("Generating: " + targetFile.getName());
+		ZipUtil.pack(workingDirectory, targetFile);
 	}
 
 	private static void deleteNotUsedFiles(File workingDirectory) {
