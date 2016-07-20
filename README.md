@@ -1,7 +1,7 @@
 # AOSP (Android Open Source Project) Research Toolkit
 
 AOSP Research Tookitは、AOSPのソースコード調査を支援するツールです。  
-AOSPのファイル群から、調査用のEclipseプロジェクトを生成するツールを中心に、下記の作業(一例)をサポートします。
+AOSPのファイル群から、調査用のEclipseプロジェクトを生成するツールを中心に、下記のような作業(一例)をサポートします。
 
 * アプリからフレームワークまで、一気通貫でソースコードを辿る
 * Androidバージョンごとの違いを把握する
@@ -18,7 +18,7 @@ AOSP Research Tookitの利用方法ですが、下記の二通りの方法があ
 
 ## AOSPから事前生成されたEclipseプロジェクトを利用
 
-### 準備
+### :black_small_square:準備
 
 下記から、調査したいバージョンのファイル名をクリックしてダウンロードしてください。  
 
@@ -29,7 +29,7 @@ AOSP Research Tookitの利用方法ですが、下記の二通りの方法があ
 > :warning: 複数のAndroidバージョンを比較したい場合には、複数ファイルをダウンロードしてください。  
 
 |Androidバージョン|ファイル|Nexus端末向けファームウェアでのバージョン|
-|--|--|--|
+|---|---|---|
 |6.0.0 r1|[android-6.0.0_r1.zip](http://files.hisano.jp/aosp/android-6.0.0_r1.zip)|MRA58K|
 |5.1.0 r1|[android-5.1.0_r1.zip](http://files.hisano.jp/aosp/android-5.1.0_r1.zip)|LMY47D|
 |5.0.1 r1|[android-5.0.1_r1.zip](http://files.hisano.jp/aosp/android-5.0.1_r1.zip)|LRX22C|
@@ -45,7 +45,7 @@ AOSP Research Tookitの利用方法ですが、下記の二通りの方法があ
 1. Eclipseの[File - Import...]メニューから、"Existing Projects into Workspace"を選択
 2. "Select archive file"フィールドに上記でタウンロードしたファイルを指定して"Finish"を押下
 
-### 現在表示しているアクティビティから処理を調査(ソースコード調査の一例)
+### :black_small_square:現在表示しているアクティビティから処理を調査(ソースコード調査の一例)
 
 1. コマンドプロンプト等で"adb shell dumpsys activy top"を実行
 2. 上記の出力結果のACTIVITY行から、現在表示しているアクティビティのクラス名を取得
@@ -58,17 +58,17 @@ AOSP Research Tookitの利用方法ですが、下記の二通りの方法があ
     + [メソッド等の処理を表示(Open Declaration機能)](http://help.eclipse.org/mars/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2FgettingStarted%2Fqs-Navigate.htm)
     + [上記以外の検索機能](http://help.eclipse.org/mars/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Ftips%2Fjdt_tips.html&anchor=searching_section)
 
-### 特定アプリの起点となるアクティビティやサービスから調査
+### :black_small_square:特定アプリの起点となるアクティビティやサービスから調査
 
 1. コマンドプロンプト等で"adb shell pm list packages"で、インストールされているアプリのアプリ名を調査
 2. コマンドプロンプト等で"adb shell dumpsys package [アプリ名]"を実行して、アクティビティ・サービス・インテントフィルタ等のクラス名を調査
     + AOSPの各アプリのAndroidManifest.xml等や、[apktool](http://ibotpeaches.github.io/Apktool/)での調査も可能
 3. 前項の手順でソースコードを調査
 
-### Nexus端末を用いた実機デバッグ
+### :black_small_square:Nexus端末を用いた実機デバッグ
 
 1. [Nexus端末向けのファームウェア](https://developers.google.com/android/nexus/images)をダウンロード
-2. 上記を解凍した後、さらに"image-<端末コード名>-<バージョン>.zip"を解答してboot.imgを取得
+2. 上記を解凍した後、さらに"image-<端末コード名>-<バージョン>.zip"を解凍してboot.imgを取得
 3. boot.imgを[bootimg](http://dark-cyanide-devs.blogspot.jp/2015/01/port-bootimg.html)等でアンパックして、"/default.prop"ファイルの"ro.debuggable=0"を"ro.debuggable=1"に変更した後にリパック
     + アンパック例) bootimg.exe --unpack-bootimg
     + リパック例) bootimg.exe --repack-bootimg
@@ -76,7 +76,7 @@ AOSP Research Tookitの利用方法ですが、下記の二通りの方法があ
     + ブートローダへの移行例) adb reboot bootloader
     + 書き込み例) fastboot flash boot boot-new.img
 5. 端末を再起動
-    + 再起動例) $ fastboot reboot
+    + 再起動例) fastboot reboot
 
 ## [AOSP](http://source.android.com/source/requirements.html)をビルドした後、AOSP Research Tookitのツールを用いて、Eclipseプロジェクトを生成して利用
 
