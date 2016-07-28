@@ -9,12 +9,10 @@ AOSPのファイル群から、調査用のEclipseプロジェクトを生成す
 
 AOSP Research Tookitの利用方法ですが、下記の二通りの方法があります。
 
-* AOSPから事前生成されたEclipseプロジェクトを利用
-    * メリット: 調査までの時間短縮が可能
-    * デメリット: 用意されたAndroidバージョンでしか調査できない
-* [AOSP](http://source.android.com/source/requirements.html)をビルドした後、AOSP Research Tookitのツールを用いて、Eclipseプロジェクトを生成して利用
-    * メリット: 自由にバージョンを選んで調査が可能
-    * デメリット: ソースコードのダウンロード・ビルド等々、事前準備に相当な時間がかかる
+||AOSPから事前生成されたEclipseプロジェクトを利用|[AOSP](http://source.android.com/source/requirements.html)をビルドした後、AOSP Research Tookitのツールを用いて、Eclipseプロジェクトを生成して利用|
+|---|---|---|
+|メリット|すぐに調査が可能|自由にバージョンを選んで調査が可能|
+|デメリット|用意されたAndroidバージョンでしか調査できない|ソースコードのダウンロード・ビルド等々、事前準備に相当な時間がかかる|
 
 ## AOSPから事前生成されたEclipseプロジェクトを利用
 
@@ -77,6 +75,13 @@ AOSP Research Tookitの利用方法ですが、下記の二通りの方法があ
     + 書き込み例) fastboot flash boot boot-new.img
 5. 端末を再起動
     + 再起動例) fastboot reboot
+6. ADT Plugin for Eclipse又はDDMSの"Devices"ビューでデバッグ対象のプロセスを選択(デバッガ接続用の8700ポートをオープン)
+7. [Run - Debug Configurations...]メニューから"Remote Java Application - Debug Selected Process in 'Devices' View with 'android-2.3.4_r1' Project"を選択して"Debug"ボタンを押下
+
+### :black_small_square:リアルタイムにシステムサービスの呼び出されているメソッドを調査
+
+1. ADT Plugin for Eclipse又はDDMSの"Devices"ビューで"system_process"プロセスを選択(デバッガ接続用の8700ポートをオープン)
+2. ShowCalledMethodsOfSystemServicesクラスを実行
 
 ## [AOSP](http://source.android.com/source/requirements.html)をビルドした後、AOSP Research Tookitのツールを用いて、Eclipseプロジェクトを生成して利用
 
