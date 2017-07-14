@@ -3,16 +3,30 @@
 AOSP Research Tookitは、AOSPのソースコード調査を支援するツールです。  
 AOSPのファイル群から、調査用のEclipseプロジェクトを生成するツールを中心に、下記のような作業(一例)をサポートします。
 
-* アプリからフレームワークまで、一気通貫でソースコードを辿る
+* アプリからフレームワークまで、一気通貫でJavaソースコードを辿る
 * Androidバージョンごとの違いを把握する
 * 実機を用いてシステムサービスをデバッグする
 
 AOSP Research Tookitの利用方法ですが、下記の二通りの方法があります。
 
-||AOSPから事前生成されたEclipseプロジェクトを利用|[AOSP](http://source.android.com/source/requirements.html)をビルドした後、AOSP Research Tookitのツールを用いて、Eclipseプロジェクトを生成して利用|
+||AOSPから生成されたEclipse・IntelliJプロジェクトを利用|[AOSP](http://source.android.com/source/requirements.html)をビルドした後、AOSP Research Tookitのツールを用いて、Eclipseプロジェクトを生成して利用|
 |---|---|---|
 |メリット|すぐに調査が可能|自由にバージョンを選んで調査が可能|
 |デメリット|用意されたAndroidバージョンでしか調査できない|ソースコードのダウンロード・ビルド等々、事前準備に相当な時間がかかる|
+
+## AOSPから事前生成されたIntelliJプロジェクトを利用
+
+### :black_small_square:準備
+
+Android 2.3から7.1のソースコードを含む下記プロジェクトをダウンロード後、解凍してIntelliJで開いてください。
+
+http://files.hisano.jp/aosp/aosp.zip
+
+### :black_small_square:Eclipseと比べたIntelliJを使うメリット
+
+* Javaのコンパイル時に展開されてしまう定数も正しく検索結果に表示
+* Javaのリフレクション経由のコードも検索結果に表示
+* 複数のAndroidバージョンをまたがって、クラス・メソッド等の利用場所を検索可能
 
 ## AOSPから事前生成されたEclipseプロジェクトを利用
 
