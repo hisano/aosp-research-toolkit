@@ -18,7 +18,7 @@ AOSP Research Tookitの利用方法ですが、下記の二通りの方法があ
 
 ### :black_small_square:準備
 
-Android 2.3から7.1のソースコードを含む下記プロジェクトをダウンロード後、解凍してIntelliJで開いてください。
+Android 2.3から8.0のソースコードを含む下記プロジェクトをダウンロード後、解凍してIntelliJで開いてください。
 
 http://files.hisano.jp/aosp/aosp.zip
 
