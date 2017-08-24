@@ -42,6 +42,9 @@ http://files.hisano.jp/aosp/aosp.zip
 
 |Androidバージョン|ファイル|Nexus端末向けファームウェアでのバージョン|
 |---|---|---|
+|8.0.0 r1|[android-8.0.0_r1.zip](http://files.hisano.jp/aosp/android-8.0.0_r1.zip)|OPR6.170623.010|
+|6.0.0 r1|[android-7.1.1_r1.zip](http://files.hisano.jp/aosp/android-7.1.1_r1.zip)|NMF26F|
+|6.0.0 r1|[android-7.0.0_r1.zip](http://files.hisano.jp/aosp/android-7.0.0_r1.zip)|NRD90M|
 |6.0.0 r1|[android-6.0.0_r1.zip](http://files.hisano.jp/aosp/android-6.0.0_r1.zip)|MRA58K|
 |5.1.0 r1|[android-5.1.0_r1.zip](http://files.hisano.jp/aosp/android-5.1.0_r1.zip)|LMY47D|
 |5.0.1 r1|[android-5.0.1_r1.zip](http://files.hisano.jp/aosp/android-5.0.1_r1.zip)|LRX22C|
