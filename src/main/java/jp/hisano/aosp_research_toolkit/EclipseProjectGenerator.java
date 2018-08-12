@@ -3,6 +3,7 @@ package jp.hisano.aosp_research_toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -134,13 +135,15 @@ public final class EclipseProjectGenerator {
 		File workingDirectory = prepareWorkingDirectory();
 
 		System.out.println("Searching jar files");
-		FileUtils.listFiles(new File(sourceRootDirectory, sourceDirectoryPath), new NameFileFilter("classes-full-debug.jar"), new NotFileFilter(new WildcardFileFilter(excludedDirectoryPatterns))).stream().forEach(file -> {
-			System.out.println("Unpacking: " + file.getAbsolutePath());
-			try {
-				ZipUtil.unpack(file, workingDirectory);
-			} catch (ZipException e) {
-				e.printStackTrace();
-			}
+		Arrays.asList("classes.jar", "classes-full-debug.jar").stream().forEach(fileName -> {
+			FileUtils.listFiles(new File(sourceRootDirectory, sourceDirectoryPath), new NameFileFilter(fileName), new NotFileFilter(new WildcardFileFilter(excludedDirectoryPatterns))).stream().forEach(file -> {
+				System.out.println("Unpacking: " + file.getAbsolutePath());
+				try {
+					ZipUtil.unpack(file, workingDirectory);
+				} catch (ZipException e) {
+					e.printStackTrace();
+				}
+			});
 		});
 		deleteNotUsedFiles(workingDirectory);
 
